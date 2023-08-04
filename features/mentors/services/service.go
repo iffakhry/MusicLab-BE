@@ -54,7 +54,8 @@ func (muc *mentorUseCase) InsertCredential(input mentors.CredentialCore) error {
 		return errors.New("validate: " + errValidate.Error())
 	}
 
-	url, errUpload := helper.GetUrlImagesFromAWS(input.CertificateFile)
+	// url, errUpload := helper.GetUrlImagesFromAWS(input.CertificateFile)
+	url, errUpload := helper.GetUrlImagesFromGCS(input.CertificateFile)
 	if errUpload != nil {
 		return errors.New(consts.AWS_ErrorUpload)
 	}
@@ -115,7 +116,8 @@ func (muc *mentorUseCase) UpdateData(mentorID uint, input mentors.Core) error {
 		return errors.New(consts.MENTOR_NameOnlyLetters)
 	}
 
-	url, errUpload := helper.GetUrlImagesFromAWS(input.AvatarFile)
+	// url, errUpload := helper.GetUrlImagesFromAWS(input.AvatarFile)
+	url, errUpload := helper.GetUrlImagesFromGCS(input.AvatarFile)
 	if errUpload != nil {
 		return errors.New(consts.AWS_ErrorUpload)
 	}

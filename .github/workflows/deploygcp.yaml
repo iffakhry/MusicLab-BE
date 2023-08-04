@@ -12,6 +12,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Load GCP Credentials
+        shell: bash
+        env:
+          GCP: ${{ secrets.GCP }}
+        run: |
+          echo "$GCP" > keys.json
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -39,5 +45,5 @@ jobs:
             docker stop ${{ secrets.CONTAINER }}
             docker rm ${{ secrets.CONTAINER }}
             docker rmi ${{ secrets.DOCKER_USER }}/${{ secrets.IMAGES }}
-            docker build -t ${{ secrets.DOCKER_USER }}/${{ secrets.IMAGES }}:latest .
-            docker run -d -p 80:8000 -e JWT_KEY=${{ secrets.JWT_KEY }} -e DBUSER=${{ secrets.DBUSER }} -e DBPASS=${{ secrets.DBPASS }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=${{ secrets.DBPORT }} -e DBNAME=${{ secrets.DBNAME }} -e ACCESS_KEY_ID=${{ secrets.ACCESS_KEY_ID }} -e ACCESS_KEY_SECRET=${{ secrets.ACCESS_KEY_SECRET }} -e AWS_REGION=${{ secrets.AWS_REGION }} -e SERVER_KEY_MIDTRANS=${{ secrets.SERVER_KEY_MIDTRANS }} -e GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} -e GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} -e GOOGLE_REDIRECT_CALLBACK=${{ secrets.GOOGLE_REDIRECT_CALLBACK }}  --name ${{ secrets.CONTAINER }} ${{ secrets.DOCKER_USER }}/${{ secrets.IMAGES }}:latest
+            docker pull ${{ secrets.DOCKER_USER }}/${{ secrets.IMAGES }}:latest
+            docker run -d -p 80:8000 -e GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }} -e GCP_BUCKET_NAME=${{ secrets.GCP_BUCKET_NAME }} -e JWT_KEY=${{ secrets.JWT_KEY }} -e DBUSER=${{ secrets.DBUSER }} -e DBPASS=${{ secrets.DBPASS }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=${{ secrets.DBPORT }} -e DBNAME=${{ secrets.DBNAME }} -e SERVER_KEY_MIDTRANS=${{ secrets.SERVER_KEY_MIDTRANS }} -e GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} -e GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} -e GOOGLE_REDIRECT_CALLBACK=${{ secrets.GOOGLE_REDIRECT_CALLBACK }}  --name ${{ secrets.CONTAINER }} ${{ secrets.DOCKER_USER }}/${{ secrets.IMAGES }}:latest

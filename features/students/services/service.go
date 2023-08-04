@@ -44,7 +44,8 @@ func (suc *studentUseCase) UpdateData(studentID uint, input students.Core) error
 		return errors.New(consts.MENTOR_NameOnlyLetters)
 	}
 
-	url, errUpload := helper.GetUrlImagesFromAWS(input.AvatarFile)
+	// url, errUpload := helper.GetUrlImagesFromAWS(input.AvatarFile)
+	url, errUpload := helper.GetUrlImagesFromGCS(input.AvatarFile)
 	if errUpload != nil {
 		return errors.New(consts.AWS_ErrorUpload)
 	}

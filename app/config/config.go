@@ -18,6 +18,8 @@ var (
 	GOOGLE_REDIRECT_CALLBACK = ""
 	GOOGLE_CLIENT_ID         = ""
 	GOOGLE_CLIENT_SECRET     = ""
+	GCP_PROJECT_ID           = ""
+	GCP_BUCKET_NAME          = ""
 )
 
 type DBConfig struct {
@@ -34,6 +36,8 @@ type DBConfig struct {
 	GOOGLE_REDIRECT_CALLBACK string
 	GOOGLE_CLIENT_ID         string
 	GOOGLE_CLIENT_SECRET     string
+	GCP_PROJECT_ID           string
+	GCP_BUCKET_NAME          string
 }
 
 // membuat fungsi global untuk pemanggilan config
@@ -100,6 +104,14 @@ func ReadEnv() *DBConfig {
 		app.GOOGLE_CLIENT_SECRET = val
 		isRead = false
 	}
+	if val, found := os.LookupEnv("GCP_PROJECT_ID"); found {
+		app.GCP_PROJECT_ID = val
+		isRead = false
+	}
+	if val, found := os.LookupEnv("GCP_BUCKET_NAME"); found {
+		app.GCP_BUCKET_NAME = val
+		isRead = false
+	}
 
 	if isRead {
 		viper.AddConfigPath(".")
@@ -124,6 +136,8 @@ func ReadEnv() *DBConfig {
 	GOOGLE_REDIRECT_CALLBACK = app.GOOGLE_REDIRECT_CALLBACK
 	GOOGLE_CLIENT_ID = app.GOOGLE_CLIENT_ID
 	GOOGLE_CLIENT_SECRET = app.GOOGLE_CLIENT_SECRET
+	GCP_PROJECT_ID = app.GCP_PROJECT_ID
+	GCP_BUCKET_NAME = app.GCP_BUCKET_NAME
 
 	return &app
 }

@@ -20,7 +20,8 @@ func New(cd classes.ClassData) classes.ClassService {
 }
 
 func (cuc *classUseCase) PostClass(fileData multipart.FileHeader, newClass classes.Core) error {
-	url, err := helper.GetUrlImagesFromAWS(fileData)
+	// url, err := helper.GetUrlImagesFromAWS(fileData)
+	url, err := helper.GetUrlImagesFromGCS(fileData)
 	if err != nil {
 		return errors.New("validate: " + err.Error())
 	}
@@ -71,7 +72,8 @@ func (cuc *classUseCase) GetMentorClassDetail(classID uint) (classes.Core, error
 }
 
 func (cuc *classUseCase) Update(mentorID uint, classID uint, fileData multipart.FileHeader, updatedClass classes.Core) error {
-	url, err := helper.GetUrlImagesFromAWS(fileData)
+	// url, err := helper.GetUrlImagesFromAWS(fileData)
+	url, err := helper.GetUrlImagesFromGCS(fileData)
 	if err != nil {
 		return errors.New("validate: " + err.Error())
 	}
